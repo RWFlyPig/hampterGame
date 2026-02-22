@@ -29,6 +29,7 @@ public class BasicGameApp implements Runnable, KeyListener {
     final int WIDTH = 1000;
     final int HEIGHT = 700;
 
+
     //Declare the variables needed for the graphics
     public JFrame frame;
     public Canvas canvas;

@@ -62,7 +62,9 @@ public class BasicGameApp implements Runnable, KeyListener {
     Image asteroidImage6;
     Asteroid asteroid7;
     Image asteroidImage7;
-    Image space = Toolkit.getDefaultToolkit().getImage("space.jpg");
+    Space space;
+    Image spaceImage1 = Toolkit.getDefaultToolkit().getImage("space.jpg");
+    Image space2 = Toolkit.getDefaultToolkit().getImage("space.jpg");
     Image explosion = Toolkit.getDefaultToolkit().getImage("explosion.png");
 
 
@@ -89,8 +91,6 @@ public class BasicGameApp implements Runnable, KeyListener {
         firstAsteroidCrash = true;
         hampter = new Hamster("hampter1.png", 300, 300, 0.75);
         hampterImage = Toolkit.getDefaultToolkit().getImage("hampter1.png");
-        gigahampter = new Hamster("gigahampter.png", 500, 500, 0.25);
-        gigahampterImage = Toolkit.getDefaultToolkit().getImage("gigahampter.png");
         sunflower = new Food("sunflowerseed.png", 400,400);
         sunflowerImage = Toolkit.getDefaultToolkit().getImage("sunflowerseed.png");
         hampterSteroids = new Hamster("hampteronsteroids.png",0,0,0);
@@ -98,6 +98,10 @@ public class BasicGameApp implements Runnable, KeyListener {
         spaceShip1 = new spaceShip(200,200);
         spaceShipImage = Toolkit.getDefaultToolkit().getImage("spaceship.png");
 
+        Asteroid [] field = new Asteroid[8];
+        for(int i = 0; i<=8; i++){
+            field[i] = new Asteroid("asteroid.png",100,100);
+        }
 
         asteroid1 = new Asteroid("asteroid.png",100,300);
         asteroidImage1 = Toolkit.getDefaultToolkit().getImage("asteroid.png");
@@ -140,7 +144,6 @@ public class BasicGameApp implements Runnable, KeyListener {
 
     public void moveThings() {
         //hampter.wrap();
-        gigahampter.bounce();
         sunflower.wrap();
         hampter.move();
         checkCrash();
@@ -152,18 +155,6 @@ public class BasicGameApp implements Runnable, KeyListener {
     }
 
     public void checkCrash() {
-        if (hampter.rect.intersects(gigahampter.rect) && firstCrash == true){
-            hampter.dx = -hampter.dx;
-            hampter.dy = -hampter.dy;
-            gigahampter.dx = -gigahampter.dx;
-            gigahampter.dy = -gigahampter.dy;
-            hampter.health =- 1;
-            firstCrash = false;
-            hampter.isAlive = false;
-        }
-        if (!hampter.rect.intersects(gigahampter.rect)){
-            firstCrash = true;
-        }
         if(hampter.rect.intersects(sunflower.rect) && firstCrash == true){
             firstCrash = false;
             sunflower.width -= 3;
@@ -171,13 +162,6 @@ public class BasicGameApp implements Runnable, KeyListener {
             hampter.dx += 3;
             hampter.dy += 3;
 
-        }
-        if(gigahampter.rect.intersects(sunflower.rect) && firstCrash == true){
-            firstCrash = false;
-            sunflower.width -= 3;
-            sunflower.height -= 3;
-            gigahampter.dx += 3;
-            gigahampter.dy += 3;
         }
     }
 
@@ -192,15 +176,6 @@ public class BasicGameApp implements Runnable, KeyListener {
         if (!hampter.rect.intersects(asteroid1.rect)) {
             firstAsteroidCrash = true;
         }
-        if (gigahampter.rect.intersects(asteroid1.rect) && firstAsteroidCrash == true) {
-                asteroid1.dx = gigahampter.dx/2;
-                asteroid1.dy = gigahampter.dy/2;
-                asteroid1.bounce();
-                firstAsteroidCrash = false;
-            }
-        if (!gigahampter.rect.intersects(asteroid1.rect)) {
-            firstAsteroidCrash = true;
-        }
         if (hampter.rect.intersects(asteroid2.rect) && firstAsteroidCrash == true) {
             asteroid2.dx = hampter.dx/2;
             asteroid2.dy = hampter.dy/2;
@@ -208,15 +183,6 @@ public class BasicGameApp implements Runnable, KeyListener {
             firstAsteroidCrash = false;
         }
         if (!hampter.rect.intersects(asteroid2.rect)) {
-            firstAsteroidCrash = true;
-        }
-        if (gigahampter.rect.intersects(asteroid2.rect) && firstAsteroidCrash == true) {
-            asteroid2.dx = gigahampter.dx/2;
-            asteroid2.dy = gigahampter.dy/2;
-            asteroid2.bounce();
-            firstAsteroidCrash = false;
-        }
-        if (!gigahampter.rect.intersects(asteroid2.rect)) {
             firstAsteroidCrash = true;
         }
         if (hampter.rect.intersects(asteroid3.rect) && firstAsteroidCrash == true) {
@@ -228,15 +194,6 @@ public class BasicGameApp implements Runnable, KeyListener {
         if (!hampter.rect.intersects(asteroid3.rect)) {
             firstAsteroidCrash = true;
         }
-        if (gigahampter.rect.intersects(asteroid3.rect) && firstAsteroidCrash == true) {
-            asteroid3.dx = gigahampter.dx/2;
-            asteroid3.dy = gigahampter.dy/2;
-            asteroid3.bounce();
-            firstAsteroidCrash = false;
-        }
-        if (!gigahampter.rect.intersects(asteroid3.rect)) {
-            firstAsteroidCrash = true;
-        }
         if (hampter.rect.intersects(asteroid4.rect) && firstAsteroidCrash == true) {
             asteroid4.dx = hampter.dx/2;
             asteroid4.dy = hampter.dy/2;
@@ -246,84 +203,34 @@ public class BasicGameApp implements Runnable, KeyListener {
         if (!hampter.rect.intersects(asteroid4.rect)) {
             firstAsteroidCrash = true;
         }
-        if (gigahampter.rect.intersects(asteroid4.rect) && firstAsteroidCrash == true) {
-            asteroid4.dx = gigahampter.dx/2;
-            asteroid4.dy = gigahampter.dy / 2;
-            asteroid4.bounce();
-            firstAsteroidCrash = false;
-        }
-        if (!gigahampter.rect.intersects(asteroid4.rect)) {
-            firstAsteroidCrash = true;
-        }
         if (hampter.rect.intersects(asteroid5.rect) && firstAsteroidCrash == true) {
             asteroid5.dx = hampter.dx / 2;
             asteroid5.dy = hampter.dy / 2;
             asteroid5.bounce();
             firstAsteroidCrash = false;
         }
-        if (!gigahampter.rect.intersects(asteroid5.rect)) {
-            firstAsteroidCrash = true;
-        }
-        if (gigahampter.rect.intersects(asteroid5.rect) && firstAsteroidCrash == true) {
-            asteroid5.dx = gigahampter.dx / 2;
-            asteroid5.dy = gigahampter.dy / 2;
-            asteroid5.bounce();
-            firstAsteroidCrash = false;
-        }
-        if (!gigahampter.rect.intersects(asteroid5.rect)) {
-            firstAsteroidCrash = true;
-        }
+
         if (hampter.rect.intersects(asteroid6.rect) && firstAsteroidCrash == true) {
             asteroid6.dx = hampter.dx / 2;
             asteroid6.dy = hampter.dy / 2;
             asteroid6.bounce();
             firstAsteroidCrash = false;
         }
-        if (!gigahampter.rect.intersects(asteroid6.rect)) {
-            firstAsteroidCrash = true;
-        }
-        if (gigahampter.rect.intersects(asteroid6.rect) && firstAsteroidCrash == true) {
-            asteroid6.dx = gigahampter.dx / 2;
-            asteroid6.dy = gigahampter.dy / 2;
-            asteroid6.bounce();
-            firstAsteroidCrash = false;
-        }
-        if (!gigahampter.rect.intersects(asteroid6.rect)) {
-            firstAsteroidCrash = true;
-        }
+
         if (hampter.rect.intersects(asteroid7.rect) && firstAsteroidCrash == true) {
             asteroid7.dx = hampter.dx / 2;
             asteroid7.dy = hampter.dy / 2;
             asteroid7.bounce();
             firstAsteroidCrash = false;
         }
-        if (!gigahampter.rect.intersects(asteroid7.rect)) {
-            firstAsteroidCrash = true;
-        }
-        if (gigahampter.rect.intersects(asteroid7.rect) && firstAsteroidCrash == true) {
-            asteroid7.dx = gigahampter.dx / 2;
-            asteroid7.dy = gigahampter.dy / 2;
-            asteroid7.bounce();
-            firstAsteroidCrash = false;
-        }
-        if (!gigahampter.rect.intersects(asteroid7.rect)) {
-            firstAsteroidCrash = true;
-        }
     }
     //Paints things on the screen using bufferStrategy
     private void render() {
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
         g.clearRect(0, 0, WIDTH, HEIGHT);
-        g.drawImage(space,0,0,WIDTH,HEIGHT,null);
-        g.setColor(Color.RED);
-        g.fillRect(800,20+(100-hampter.health), 15, hampter.health-5);
-        g.drawImage(asteroidImage1,asteroid1.xpos,asteroid1.ypos,asteroid1.width,asteroid1.height,null);
-        g.drawImage(asteroidImage2,asteroid2.xpos,asteroid2.ypos,asteroid2.width,asteroid2.height,null);
-        g.drawImage(asteroidImage3,asteroid3.xpos,asteroid3.ypos,asteroid3.width,asteroid3.height,null);
-        g.drawImage(asteroidImage4,asteroid4.xpos,asteroid4.ypos,asteroid4.width,asteroid4.height,null);
-        g.drawImage(asteroidImage5,asteroid5.xpos,asteroid5.ypos,asteroid5.width,asteroid5.height,null);
-        g.drawImage(asteroidImage6,asteroid6.xpos,asteroid6.ypos,asteroid6.width,asteroid6.height,null);
-        g.drawImage(asteroidImage7,asteroid7.xpos,asteroid7.ypos,asteroid7.width,asteroid7.height,null);
+        g.drawImage(spaceImage1,0,0,WIDTH,HEIGHT,null);
+        /*g.setColor(Color.RED);
+        g.fillRect(800,20+(100-hampter.health), 15, hampter.health-5);*/
 
         //draw the image
         if(hampter.isAlive == false) {
@@ -335,7 +242,6 @@ public class BasicGameApp implements Runnable, KeyListener {
 
         } else {
             g.drawImage(hampterImage, hampter.xpos, hampter.ypos, hampter.width, hampter.height, null);
-            g.drawImage(gigahampterImage, gigahampter.xpos, gigahampter.ypos, gigahampter.width, gigahampter.height, null);
 
         }
         g.drawImage(sunflowerImage, sunflower.xpos,sunflower.ypos,sunflower.width,sunflower.height,null);

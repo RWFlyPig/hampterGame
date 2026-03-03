@@ -39,16 +39,13 @@ public class BasicGameApp implements Runnable, KeyListener {
 
     Hamster hampter;
     Image hampterImage;
-    Hamster gigahampter;
-    Image gigahampterImage;
     Food sunflower;
     Image sunflowerImage;
     Hamster hampterSteroids;
     Image hampterSteroidsImage;
-    spaceShip spaceShip1;
-    Image spaceShipImage;
+    Image spaceImage1;
 
-    Asteroid asteroid1;
+/*    Asteroid asteroid1;
     Image asteroidImage1;
     Asteroid asteroid2;
     Image asteroidImage2;
@@ -61,10 +58,7 @@ public class BasicGameApp implements Runnable, KeyListener {
     Asteroid asteroid6;
     Image asteroidImage6;
     Asteroid asteroid7;
-    Image asteroidImage7;
-    Space space;
-    Image spaceImage1 = Toolkit.getDefaultToolkit().getImage("space.jpg");
-    Image space2 = Toolkit.getDefaultToolkit().getImage("space.jpg");
+    Image asteroidImage7;*/
     Image explosion = Toolkit.getDefaultToolkit().getImage("explosion.png");
 
 
@@ -95,15 +89,14 @@ public class BasicGameApp implements Runnable, KeyListener {
         sunflowerImage = Toolkit.getDefaultToolkit().getImage("sunflowerseed.png");
         hampterSteroids = new Hamster("hampteronsteroids.png",0,0,0);
         hampterSteroidsImage = Toolkit.getDefaultToolkit().getImage("hampteronsteroids.png");
-        spaceShip1 = new spaceShip(200,200);
-        spaceShipImage = Toolkit.getDefaultToolkit().getImage("spaceship.png");
+        spaceImage1 = Toolkit.getDefaultToolkit().getImage("space.jpg");
 
         Asteroid [] field = new Asteroid[8];
-        for(int i = 0; i<=8; i++){
+        for(int i = 0; i<8; i++){
             field[i] = new Asteroid("asteroid.png",100,100);
         }
 
-        asteroid1 = new Asteroid("asteroid.png",100,300);
+/*        asteroid1 = new Asteroid("asteroid.png",100,300);
         asteroidImage1 = Toolkit.getDefaultToolkit().getImage("asteroid.png");
         asteroid2 = new Asteroid("asteroid.png",200,200);
         asteroidImage2 = Toolkit.getDefaultToolkit().getImage("asteroid.png");
@@ -116,7 +109,7 @@ public class BasicGameApp implements Runnable, KeyListener {
         asteroid6 = new Asteroid("asteroid.png",500,400);
         asteroidImage6 = Toolkit.getDefaultToolkit().getImage("asteroid.png");
         asteroid7 = new Asteroid("asteroid.png",600,100);
-        asteroidImage7 = Toolkit.getDefaultToolkit().getImage("asteroid.png");
+        asteroidImage7 = Toolkit.getDefaultToolkit().getImage("asteroid.png");*/
 
         run();
 
@@ -133,21 +126,22 @@ public class BasicGameApp implements Runnable, KeyListener {
         //for the moment we will loop things forever.
         while (true) {
             moveThings();  //move all the game objects
-//            if (hampter.isAlive == false){
-//                hampter.width += 1;
-//                hampter.height += 1;
-//            }
             render();  // paint the graphics
             pause(30); // sleep for 10 ms
         }
     }
 
+    public void jump(){
+        hampter.ypos = 100;
+        int gravity = 10;
+        hampter.dy = -20+gravity;
+
+    }
     public void moveThings() {
         //hampter.wrap();
         sunflower.wrap();
         hampter.move();
         checkCrash();
-        checkCrashAsteroid();
 
         if (pressingKey){
             hampter.move();
@@ -165,7 +159,7 @@ public class BasicGameApp implements Runnable, KeyListener {
         }
     }
 
-    public void checkCrashAsteroid() {
+    /*public void checkCrashAsteroid() {
 
         if (hampter.rect.intersects(asteroid1.rect) && firstAsteroidCrash == true) {
             asteroid1.dx = hampter.dx/2;
@@ -223,14 +217,15 @@ public class BasicGameApp implements Runnable, KeyListener {
             asteroid7.bounce();
             firstAsteroidCrash = false;
         }
-    }
+    }*/
     //Paints things on the screen using bufferStrategy
     private void render() {
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
         g.clearRect(0, 0, WIDTH, HEIGHT);
+
         g.drawImage(spaceImage1,0,0,WIDTH,HEIGHT,null);
-        /*g.setColor(Color.RED);
-        g.fillRect(800,20+(100-hampter.health), 15, hampter.health-5);*/
+        g.setColor(Color.RED);
+        g.fillRect(800,20+(100-hampter.health), 15, hampter.health-5);
 
         //draw the image
         if(hampter.isAlive == false) {
@@ -238,8 +233,6 @@ public class BasicGameApp implements Runnable, KeyListener {
             hampter.dx = 0;
             hampter.dy = 0;
             firstCrash = false;
-            g.drawImage(hampterSteroidsImage, gigahampter.xpos, gigahampter.ypos,300,300, null);
-
         } else {
             g.drawImage(hampterImage, hampter.xpos, hampter.ypos, hampter.width, hampter.height, null);
 
@@ -299,27 +292,10 @@ public class BasicGameApp implements Runnable, KeyListener {
     public void keyPressed(KeyEvent e) {
         //pressingKey = true;
 
-        System.out.println(e.getKeyCode());
-            if (e.getKeyCode() == 87) {
-                hampter.dy = -20;
-                hampter.dx = 0;
-            }
-            if (e.getKeyCode() == 83) {
+        System.out.println(e.getKeyCode()); //space bar jump
+            if (e.getKeyCode() == 32) {
                 hampter.dy = 20;
-                hampter.dx = 0;
             }
-        if (e.getKeyCode() == 65) {
-            hampter.dy = 0;
-            hampter.dx = -20;
-        }
-        if (e.getKeyCode() == 68) {
-            hampter.dy = 0;
-            hampter.dx = 20;
-        }
-        if (e.getKeyCode() == 10){
-            hampter.width += 5;
-            hampter.height +=5;
-        }
     }
 
     @Override

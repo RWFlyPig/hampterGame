@@ -27,8 +27,8 @@ public class Hamster {
         xpos = pXpos;
         ypos = pYpos;
         successRate = psuccess;
-        dx = 5;
-        dy = 13;
+        dx = 8;
+        dy = 0;
         width = 80;
         height = 80;
         isAlive = true;

@@ -41,24 +41,13 @@ public class BasicGameApp implements Runnable, KeyListener {
     Image hampterImage;
     Food sunflower;
     Image sunflowerImage;
+    Food sunflower2;
     Hamster hampterSteroids;
     Image hampterSteroidsImage;
     Image spaceImage1;
 
-/*    Asteroid asteroid1;
-    Image asteroidImage1;
-    Asteroid asteroid2;
-    Image asteroidImage2;
-    Asteroid asteroid3;
-    Image asteroidImage3;
-    Asteroid asteroid4;
-    Image asteroidImage4;
-    Asteroid asteroid5;
-    Image asteroidImage5;
-    Asteroid asteroid6;
-    Image asteroidImage6;
-    Asteroid asteroid7;
-    Image asteroidImage7;*/
+    Asteroid asteroid;
+    Image asteroidImage;
     Image explosion = Toolkit.getDefaultToolkit().getImage("explosion.png");
 
 
@@ -87,13 +76,15 @@ public class BasicGameApp implements Runnable, KeyListener {
         hampterImage = Toolkit.getDefaultToolkit().getImage("hampter1.png");
         sunflower = new Food("sunflowerseed.png", 400,400);
         sunflowerImage = Toolkit.getDefaultToolkit().getImage("sunflowerseed.png");
+        sunflower2 = new Food("sunflower2.png",100,400);
         hampterSteroids = new Hamster("hampteronsteroids.png",0,0,0);
         hampterSteroidsImage = Toolkit.getDefaultToolkit().getImage("hampteronsteroids.png");
         spaceImage1 = Toolkit.getDefaultToolkit().getImage("space.jpg");
 
+
         Asteroid [] field = new Asteroid[8];
         for(int i = 0; i<8; i++){
-            field[i] = new Asteroid("asteroid.png",100,100);
+            field[i] = new Asteroid();
         }
 
 /*        asteroid1 = new Asteroid("asteroid.png",100,300);
@@ -132,30 +123,47 @@ public class BasicGameApp implements Runnable, KeyListener {
     }
 
     public void jump(){
-        hampter.ypos = 100;
         int gravity = 10;
-        hampter.dy = -20+gravity;
+        hampter.dy = -30;
+        if(hampter.ypos == 200){
+            hampter.dy = 0;
+        }
 
     }
     public void moveThings() {
         //hampter.wrap();
         sunflower.wrap();
-        hampter.move();
+        sunflower2.wrap();
+        hampter.wrap();
         checkCrash();
 
         if (pressingKey){
             hampter.move();
+        }
+        if(hampter.ypos == 500){
+            hampter.move();
+            hampter.dy=0;
         }
     }
 
     public void checkCrash() {
         if(hampter.rect.intersects(sunflower.rect) && firstCrash == true){
             firstCrash = false;
-            sunflower.width -= 3;
-            sunflower.height -= 3;
-            hampter.dx += 3;
-            hampter.dy += 3;
-
+            sunflower.width = 0;
+            sunflower.height = 0;
+            hampter.width += 50;
+            hampter.height += 50;
+            hampter.isAlive = true;
+            sunflower.isAlive = false;
+        }
+        if(hampter.rect.intersects(sunflower2.rect)){
+            sunflower2.isAlive = false;
+            sunflower.isAlive =true;
+            sunflower2.width = 0;
+            sunflower2.height = 0;
+            hampter.width += 50;
+            hampter.height += 50;
+            hampter.isAlive = true;
         }
     }
 
@@ -235,12 +243,20 @@ public class BasicGameApp implements Runnable, KeyListener {
             firstCrash = false;
         } else {
             g.drawImage(hampterImage, hampter.xpos, hampter.ypos, hampter.width, hampter.height, null);
-
         }
         g.drawImage(sunflowerImage, sunflower.xpos,sunflower.ypos,sunflower.width,sunflower.height,null);
+        if(sunflower.isAlive == false){
+            g.drawImage(sunflowerImage, sunflower2.xpos,sunflower2.ypos,sunflower2.width,sunflower2.height,null);
+        }
         g.dispose();
         bufferStrategy.show();
 
+        Asteroid [] field = new Asteroid[8];
+        for(int i = 0; i<8; i++){
+            asteroidImage = Toolkit.getDefaultToolkit().getImage("asteroid.png");
+            g.drawImage(asteroidImage,(int)(Math.random()*1000),(int)(Math.random()*700),50,50,null);
+
+        }
     }
 
     //Pauses or sleeps the computer for the amount specified in milliseconds
@@ -294,28 +310,17 @@ public class BasicGameApp implements Runnable, KeyListener {
 
         System.out.println(e.getKeyCode()); //space bar jump
             if (e.getKeyCode() == 32) {
-                hampter.dy = 20;
+                hampter.dx = 2;
+                hampter.dy = -50;
             }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         //pressingKey = false;
-        if (e.getKeyCode() == 87) {
-            hampter.dy = 0;
-            hampter.dx = 0;
-        }
-        if (e.getKeyCode() == 83) {
-            hampter.dy = 0;
-            hampter.dx = 0;
-        }
-        if (e.getKeyCode() == 65) {
-            hampter.dy = 0;
-            hampter.dx = 0;
-        }
-        if (e.getKeyCode() == 68) {
-            hampter.dy = 0;
-            hampter.dx = 0;
+        if (e.getKeyCode() == 32) {
+            hampter.dx = 8;
+            hampter.dy = 15;
         }
     }
 }

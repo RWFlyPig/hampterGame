@@ -20,10 +20,7 @@ public class Asteroid {
 
     //This is a constructor that takes 3 parameters.
     // This allows us to specify the hero's name and position when we build it.
-    public Asteroid(String pName, int pXpos, int pYpos) {
-        name = pName;
-        xpos = pXpos;
-        ypos = pYpos;
+    public Asteroid() {
         dx = 0;
         dy = 0;
         width = 50;

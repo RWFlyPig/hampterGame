@@ -34,6 +34,10 @@ public class BasicGameApp implements Runnable, KeyListener {
     public JFrame frame;
     public Canvas canvas;
     public JPanel panel;
+    public boolean pressingKey;
+    public boolean firstAsteroidCrash;
+    public boolean firstCrash;
+    public SoundFile song;
 
     public BufferStrategy bufferStrategy;
 
@@ -49,11 +53,6 @@ public class BasicGameApp implements Runnable, KeyListener {
     Asteroid asteroid;
     Image asteroidImage;
     Image explosion = Toolkit.getDefaultToolkit().getImage("explosion.png");
-
-
-    public boolean pressingKey;
-    public boolean firstAsteroidCrash;
-    public boolean firstCrash;
 
 
     // Main method definition
@@ -80,7 +79,7 @@ public class BasicGameApp implements Runnable, KeyListener {
         hampterSteroids = new Hamster("hampteronsteroids.png",0,0,0);
         hampterSteroidsImage = Toolkit.getDefaultToolkit().getImage("hampteronsteroids.png");
         spaceImage1 = Toolkit.getDefaultToolkit().getImage("space.jpg");
-
+        song = new SoundFile("Woe Is Me!.wav");
 
         Asteroid [] field = new Asteroid[8];
         for(int i = 0; i<8; i++){
@@ -119,6 +118,7 @@ public class BasicGameApp implements Runnable, KeyListener {
             moveThings();  //move all the game objects
             render();  // paint the graphics
             pause(30); // sleep for 10 ms
+            song.loop();
         }
     }
 

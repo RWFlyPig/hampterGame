@@ -37,6 +37,7 @@ public class BasicGameApp implements Runnable, KeyListener {
     public boolean pressingKey;
     public boolean firstAsteroidCrash;
     public boolean firstCrash;
+    public boolean pause;
     public SoundFile song;
 
     public BufferStrategy bufferStrategy;
@@ -73,16 +74,16 @@ public class BasicGameApp implements Runnable, KeyListener {
         firstAsteroidCrash = true;
         hampter = new Hamster("hampter1.png", 300, 300, 0.75);
         hampterImage = Toolkit.getDefaultToolkit().getImage("hampter1.png");
-        sunflower = new Food("sunflowerseed.png", 400,400);
+        sunflower = new Food("sunflowerseed.png", 400, 400);
         sunflowerImage = Toolkit.getDefaultToolkit().getImage("sunflowerseed.png");
-        sunflower2 = new Food("sunflower2.png",100,400);
-        hampterSteroids = new Hamster("hampteronsteroids.png",0,0,0);
+        sunflower2 = new Food("sunflower2.png", 100, 400);
+        hampterSteroids = new Hamster("hampteronsteroids.png", 0, 0, 0);
         hampterSteroidsImage = Toolkit.getDefaultToolkit().getImage("hampteronsteroids.png");
         spaceImage1 = Toolkit.getDefaultToolkit().getImage("space.jpg");
         song = new SoundFile("Woe Is Me!.wav");
 
-        Asteroid [] field = new Asteroid[8];
-        for(int i = 0; i<8; i++){
+        Asteroid[] field = new Asteroid[8];
+        for (int i = 0; i < 8; i++) {
             field[i] = new Asteroid();
         }
 
@@ -122,14 +123,15 @@ public class BasicGameApp implements Runnable, KeyListener {
         }
     }
 
-    public void jump(){
+    public void jump() {
         int gravity = 10;
         hampter.dy = -30;
-        if(hampter.ypos == 200){
+        if (hampter.ypos == 200) {
             hampter.dy = 0;
         }
 
     }
+
     public void moveThings() {
         //hampter.wrap();
         sunflower.wrap();
@@ -137,17 +139,17 @@ public class BasicGameApp implements Runnable, KeyListener {
         hampter.wrap();
         checkCrash();
 
-        if (pressingKey){
+        if (pressingKey) {
             hampter.move();
         }
-        if(hampter.ypos == 500){
+        if (hampter.ypos == 500) {
             hampter.move();
-            hampter.dy=0;
+            hampter.dy = 0;
         }
     }
 
     public void checkCrash() {
-        if(hampter.rect.intersects(sunflower.rect) && firstCrash == true){
+        if (hampter.rect.intersects(sunflower.rect) && firstCrash == true) {
             firstCrash = false;
             sunflower.width = 0;
             sunflower.height = 0;
@@ -155,15 +157,17 @@ public class BasicGameApp implements Runnable, KeyListener {
             hampter.height += 50;
             hampter.isAlive = true;
             sunflower.isAlive = false;
+            hampter.onSteroids = true;
         }
-        if(hampter.rect.intersects(sunflower2.rect)){
+        if (hampter.rect.intersects(sunflower2.rect)) {
             sunflower2.isAlive = false;
-            sunflower.isAlive =true;
+            sunflower.isAlive = true;
             sunflower2.width = 0;
             sunflower2.height = 0;
             hampter.width += 50;
             hampter.height += 50;
             hampter.isAlive = true;
+            hampter.onSteroids = false;
         }
     }
 
@@ -231,36 +235,39 @@ public class BasicGameApp implements Runnable, KeyListener {
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
         g.clearRect(0, 0, WIDTH, HEIGHT);
 
-        g.drawImage(spaceImage1,0,0,WIDTH,HEIGHT,null);
+        g.drawImage(spaceImage1, 0, 0, WIDTH, HEIGHT, null);
         g.setColor(Color.RED);
-        g.fillRect(800,20+(100-hampter.health), 15, hampter.health-5);
+        g.fillRect(800, 20 + (100 - hampter.health), 15, hampter.health - 5);
 
         //draw the image
-        if(hampter.isAlive == false) {
-            g.drawImage(explosion, hampter.xpos, hampter.ypos, 300, 300, null);
-            hampter.dx = 0;
-            hampter.dy = 0;
+        if (hampter.onSteroids == true) {
+            g.drawImage(hampterSteroidsImage, hampter.xpos, hampter.ypos, 200, 200, null);
+            hampter.dx = 15;
+            hampter.dy = 15;
             firstCrash = false;
         } else {
             g.drawImage(hampterImage, hampter.xpos, hampter.ypos, hampter.width, hampter.height, null);
         }
-        g.drawImage(sunflowerImage, sunflower.xpos,sunflower.ypos,sunflower.width,sunflower.height,null);
-        if(sunflower.isAlive == false){
-            g.drawImage(sunflowerImage, sunflower2.xpos,sunflower2.ypos,sunflower2.width,sunflower2.height,null);
+        g.drawImage(sunflowerImage, sunflower.xpos, sunflower.ypos, sunflower.width, sunflower.height, null);
+        if (sunflower.isAlive == false) {
+            g.drawImage(sunflowerImage, sunflower2.xpos, sunflower2.ypos, sunflower2.width, sunflower2.height, null);
+        }
+        if (sunflower2.isAlive == false) {
+            g.drawImage(sunflowerImage, sunflower.xpos, sunflower.ypos, sunflower.width, sunflower.height, null);
         }
         g.dispose();
         bufferStrategy.show();
 
-        Asteroid [] field = new Asteroid[8];
-        for(int i = 0; i<8; i++){
+        Asteroid[] field = new Asteroid[8];
+        for (int i = 0; i < 8; i++) {
             asteroidImage = Toolkit.getDefaultToolkit().getImage("asteroid.png");
-            g.drawImage(asteroidImage,(int)(Math.random()*1000),(int)(Math.random()*700),50,50,null);
+            g.drawImage(asteroidImage, (int) (Math.random() * 1000), (int) (Math.random() * 700), 50, 50, null);
 
         }
     }
 
     //Pauses or sleeps the computer for the amount specified in milliseconds
-    public void pause(int time ) {
+    public void pause(int time) {
         try {
             Thread.sleep(time);
         } catch (InterruptedException e) {
@@ -307,12 +314,42 @@ public class BasicGameApp implements Runnable, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         //pressingKey = true;
-
         System.out.println(e.getKeyCode()); //space bar jump
-            if (e.getKeyCode() == 32) {
-                hampter.dx = 2;
-                hampter.dy = -50;
-            }
+        if (e.getKeyCode() == 32) {
+            hampter.dx = 2;
+            hampter.dy = -50;
+        }
+        if (e.getKeyCode() == 27) {
+            hampter.dx = 0;
+            hampter.dy = 0;
+            sunflower.dx = 0;
+            sunflower.dy = 0;
+            sunflower2.dx = 0;
+            sunflower2.dy = 0;
+            song.pause();
+            pause = true;
+        }
+        if (pause == true && e.getKeyCode() == 87) {
+            sunflower.dy = -5;
+        }
+        if (pause == true && e.getKeyCode() == 68) {
+            sunflower.dx = 5;
+        }
+        if (pause == true && e.getKeyCode() == 65) {
+            sunflower.dx = -5;
+        }
+        if (pause == true && e.getKeyCode() == 83) {
+            sunflower.dy = 5;
+        }
+        if (e.getKeyCode() == 10) {
+            sunflower.dx = (int) (Math.random() * 10);
+            sunflower.dy = (int) (Math.random() * 10);
+            sunflower2.dx = (int) (Math.random() * 10);
+            sunflower2.dy = (int) (Math.random() * 10);
+        }
+        if (pause == true && e.getKeyCode() == 82) {
+            pause = false;
+        }
     }
 
     @Override
@@ -321,6 +358,22 @@ public class BasicGameApp implements Runnable, KeyListener {
         if (e.getKeyCode() == 32) {
             hampter.dx = 8;
             hampter.dy = 15;
+        }
+        if (pause == true && e.getKeyCode() == 87) {
+            sunflower.dx = 0;
+            sunflower.dy = 0;
+        }
+        if (pause == true && e.getKeyCode() == 68) {
+            sunflower.dx = 0;
+            sunflower.dy = 0;
+        }
+        if (pause == true && e.getKeyCode() == 65) {
+            sunflower.dx = 0;
+            sunflower.dy = 0;
+        }
+        if (pause == true && e.getKeyCode() == 83) {
+            sunflower.dy = 0;
+            sunflower.dx = 0;
         }
     }
 }

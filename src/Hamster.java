@@ -19,6 +19,7 @@ public class Hamster {
     public Rectangle rect;
     public double successRate;
     public int health;
+    public boolean onSteroids;
 
     //This is a constructor that takes 3 parameters.
     // This allows us to specify the hero's name and position when we build it.

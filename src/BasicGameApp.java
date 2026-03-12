@@ -326,7 +326,7 @@ public class BasicGameApp implements Runnable, KeyListener {
             sunflower.dy = 0;
             sunflower2.dx = 0;
             sunflower2.dy = 0;
-            song.pause();
+            song.stop();
             pause = true;
         }
         if (pause == true && e.getKeyCode() == 87) {
@@ -341,6 +341,15 @@ public class BasicGameApp implements Runnable, KeyListener {
         if (pause == true && e.getKeyCode() == 83) {
             sunflower.dy = 5;
         }
+        if (e.getKeyCode() == 61) {
+            hampter.width += 5;
+            hampter.height += 5;
+        }
+        if (e.getKeyCode() == 45) {
+            hampter.width -= 5;
+            hampter.height -= 5;
+        }
+
         if (e.getKeyCode() == 10) {
             sunflower.dx = (int) (Math.random() * 10);
             sunflower.dy = (int) (Math.random() * 10);

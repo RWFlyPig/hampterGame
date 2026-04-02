@@ -55,6 +55,9 @@ public class BasicGameApp implements Runnable, KeyListener {
     Image asteroidImage;
     Image explosion = Toolkit.getDefaultToolkit().getImage("explosion.png");
 
+    BackGround GameBackGround;
+    Image GameBackGroundImage;
+
 
     // Main method definition
     // This is the code that runs first and automatically
@@ -79,8 +82,12 @@ public class BasicGameApp implements Runnable, KeyListener {
         sunflower2 = new Food("sunflower2.png", 100, 400);
         hampterSteroids = new Hamster("hampteronsteroids.png", 0, 0, 0);
         hampterSteroidsImage = Toolkit.getDefaultToolkit().getImage("hampteronsteroids.png");
+/*
         spaceImage1 = Toolkit.getDefaultToolkit().getImage("space.jpg");
+*/
         song = new SoundFile("Woe Is Me!.wav");
+        GameBackGround = new BackGround("space",0,0);
+        GameBackGroundImage = Toolkit.getDefaultToolkit().getImage("space.jpg");
 
         Asteroid[] field = new Asteroid[8];
         for (int i = 0; i < 8; i++) {
@@ -138,6 +145,7 @@ public class BasicGameApp implements Runnable, KeyListener {
         sunflower2.wrap();
         hampter.wrap();
         checkCrash();
+        GameBackGround.wrap();
 
         if (pressingKey) {
             hampter.move();

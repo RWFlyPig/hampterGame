@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Background {
+public class BackGround {
     public String name;
     public int xpos;
     public int ypos;
@@ -28,7 +28,7 @@ public class Background {
         }
         xpos = xpos +dx;
         ypos = ypos +dy;
-        rect = new Rectangle(xpos, ypos, width, height)
+        rect = new Rectangle(xpos, ypos, width, height);
     }
 
 }

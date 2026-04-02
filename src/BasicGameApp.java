@@ -42,21 +42,28 @@ public class BasicGameApp implements Runnable, KeyListener {
 
     public BufferStrategy bufferStrategy;
 
+
+    BackGround Space;
+    Image SpaceImage;
+    BackGround Space2;
+    Image SpaceImage2;
+
     Hamster hampter;
     Image hampterImage;
+    Hamster hampterSteroids;
+    Image hampterSteroidsImage;
+
     Food sunflower;
     Image sunflowerImage;
     Food sunflower2;
-    Hamster hampterSteroids;
-    Image hampterSteroidsImage;
-    Image spaceImage1;
+
+
 
     Asteroid asteroid;
     Image asteroidImage;
     Image explosion = Toolkit.getDefaultToolkit().getImage("explosion.png");
 
-    BackGround GameBackGround;
-    Image GameBackGroundImage;
+
 
 
     // Main method definition
@@ -82,12 +89,15 @@ public class BasicGameApp implements Runnable, KeyListener {
         sunflower2 = new Food("sunflower2.png", 100, 400);
         hampterSteroids = new Hamster("hampteronsteroids.png", 0, 0, 0);
         hampterSteroidsImage = Toolkit.getDefaultToolkit().getImage("hampteronsteroids.png");
+        Space = new BackGround("space1",10,0);
+        SpaceImage = Toolkit.getDefaultToolkit().getImage("space.jpg");
+        Space2 = new BackGround("space2",1010,0);
+        SpaceImage2 = Toolkit.getDefaultToolkit().getImage("space.jpg");
 /*
         spaceImage1 = Toolkit.getDefaultToolkit().getImage("space.jpg");
 */
         song = new SoundFile("Woe Is Me!.wav");
-        GameBackGround = new BackGround("space",0,0);
-        GameBackGroundImage = Toolkit.getDefaultToolkit().getImage("space.jpg");
+
 
         Asteroid[] field = new Asteroid[8];
         for (int i = 0; i < 8; i++) {
@@ -145,7 +155,7 @@ public class BasicGameApp implements Runnable, KeyListener {
         sunflower2.wrap();
         hampter.wrap();
         checkCrash();
-        GameBackGround.wrap();
+        Space.wrap();
 
         if (pressingKey) {
             hampter.move();
@@ -242,11 +252,8 @@ public class BasicGameApp implements Runnable, KeyListener {
     private void render() {
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
         g.clearRect(0, 0, WIDTH, HEIGHT);
-
-        g.drawImage(spaceImage1, 0, 0, WIDTH, HEIGHT, null);
-        g.setColor(Color.RED);
-        g.fillRect(800, 20 + (100 - hampter.health), 15, hampter.health - 5);
-
+        g.drawImage(SpaceImage, Space.xpos ,Space.ypos, Space.width, Space.height, null);
+        g.drawImage(SpaceImage2, Space2.xpos, Space2.ypos, Space2.width, Space2.height,null);
         //draw the image
         if (hampter.onSteroids == true) {
             g.drawImage(hampterSteroidsImage, hampter.xpos, hampter.ypos, 200, 200, null);

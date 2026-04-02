@@ -16,13 +16,13 @@ public class BackGround {
         ypos = pYpos;
         dx = -10;
         dy = 0;
-        width = 1500;
+        width = 1000;
         height = 700;
         rect = new Rectangle(xpos, ypos, width, height);
     }
 
     public void wrap(){
-        if (xpos < -1450){
+        if (xpos < -1000){
             System.out.println("x" + xpos);
             xpos = 1000;
         }

@@ -38,6 +38,7 @@ public class BasicGameApp implements Runnable, KeyListener {
     public boolean firstAsteroidCrash;
     public boolean firstCrash;
     public boolean pause;
+    public boolean firstExit;
     public SoundFile song;
 
     public BufferStrategy bufferStrategy;
@@ -59,8 +60,9 @@ public class BasicGameApp implements Runnable, KeyListener {
 
 
 
-    Asteroid asteroid;
+    Asteroid [] asteroids;
     Image asteroidImage;
+
     Image explosion = Toolkit.getDefaultToolkit().getImage("explosion.png");
 
 
@@ -70,7 +72,17 @@ public class BasicGameApp implements Runnable, KeyListener {
     // This is the code that runs first and automatically
     public static void main(String[] args) {
         BasicGameApp ex = new BasicGameApp();   //creates a new instance of the game
-        new Thread(ex).start();                 //creates a threads & starts up the code in the run( ) method
+        new Thread(ex).start();//creates a threads & starts up the code in the run( ) method
+        Asteroid Asteroid = new Asteroid();
+    }
+
+    public Asteroid(){
+        asteroids = new Asteroid[15];
+        for(int i=0;i<asteroids.length;i++){
+            Asteroid myasteroid = new Asteroid();
+            asteroids [i] = myasteroid;
+        }
+
     }
 
 
@@ -156,6 +168,7 @@ public class BasicGameApp implements Runnable, KeyListener {
         hampter.wrap();
         checkCrash();
         Space.wrap();
+        Space2.wrap();
 
         if (pressingKey) {
             hampter.move();
@@ -273,11 +286,8 @@ public class BasicGameApp implements Runnable, KeyListener {
         g.dispose();
         bufferStrategy.show();
 
-        Asteroid[] field = new Asteroid[8];
-        for (int i = 0; i < 8; i++) {
-            asteroidImage = Toolkit.getDefaultToolkit().getImage("asteroid.png");
+        for (int i = 0; i < asteroids.length; i++) {
             g.drawImage(asteroidImage, (int) (Math.random() * 1000), (int) (Math.random() * 700), 50, 50, null);
-
         }
     }
 
@@ -341,8 +351,20 @@ public class BasicGameApp implements Runnable, KeyListener {
             sunflower.dy = 0;
             sunflower2.dx = 0;
             sunflower2.dy = 0;
-            song.stop();
+            song.pause();
             pause = true;
+            Space.dx=0;
+            Space2.dx=0;
+            firstExit = true;
+        }
+        if (e.getKeyCode() == 27 && firstExit == true) {
+            hampter.wrap();
+            sunflower.wrap();
+            sunflower2.wrap();
+            song.resume();
+            pause = false;
+            Space.wrap();
+            Space2.wrap();
         }
         if (pause == true && e.getKeyCode() == 87) {
             sunflower.dy = -5;

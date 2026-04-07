@@ -22,9 +22,9 @@ public class BackGround {
     }
 
     public void wrap(){
-        if (xpos < -1000){
+        if (xpos < -1100){
             System.out.println("x" + xpos);
-            xpos = 1000;
+            xpos = 800;
         }
         xpos = xpos +dx;
         ypos = ypos +dy;

@@ -23,6 +23,8 @@ public class Asteroid {
     public Asteroid() {
         dx = 0;
         dy = 0;
+        xpos = ((int)Math.random()*1000);
+        ypos = ((int)Math.random()*700);
         width = 50;
         height = 50;
         isAlive = true;
